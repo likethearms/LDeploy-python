@@ -1,0 +1,57 @@
+#!/usr/bin/env python3
+
+import sys
+import subprocess
+import os.path
+import json
+
+argv = sys.argv
+argv_len = len(argv)
+a1 = argv[1]
+
+def rsync(s, l):
+    call_string = ["rsync", "-aP",  "--chown={}".format(s["chown"]), "{}".format(l), "{}@{}:{}".format(s["user"], s["remote_address"], s["deploy_location"])]
+    # print(" ".join(call_string))
+    subprocess.call(call_string)
+
+if argv_len > 3:
+    print("You had too much arguments")
+
+else:
+    # Init arg
+    if a1 == "init":
+        print("Call init")
+
+    # Help arg
+    elif a1 == "help":
+        print("Call help")
+
+    else:
+        # if conf file exists
+        if os.path.isfile("ldeploy.json"):
+
+            # Open json file
+            with open('ldeploy.json') as ldeploy_file:
+                conf_json = json.load(ldeploy_file)
+
+            # remote
+            if argv[1] == "remote":
+
+                # Second arg
+                if argv_len > 2 :
+
+                    # Find arg from json array
+                    if argv[2] in conf_json["remote"]:
+
+                        remote = conf_json["remote"][argv[2]]
+                        rsync(remote, conf_json["project_directory"])
+
+                    else:
+                        print("Custom remote not exists")
+
+                else:
+                    remote = conf_json["remote"]["standard"]
+                    rsync(remote, conf_json["project_directory"])
+
+        else :
+            print("Cannot find configuration file")

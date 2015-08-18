@@ -1,2 +1,5 @@
 /test
-/test2
+/deploy
+reset.sh
+ldeploy.json
+ldeploy.*
