@@ -4,6 +4,7 @@ import sys
 import subprocess
 import os.path
 import json
+from shutil import copyfile
 
 argv = sys.argv
 a1 = str(argv[1])
@@ -12,7 +13,7 @@ a1 = str(argv[1])
 # RSYNC
 # # # # # # # # # # # #
 def rsync(s, l):
-    call_string = ["rsync", "-aP", "--chown={}".format(s["chown"]), "{}".format(l), "{}@{}:{}".format(s["user"], s["address"], s["deploy_location"])]
+    call_string = ["rsync", "-aP", "--chown={}".format(s["chown"]), "{}".format(l), "{}@{}:{}".format(s["user"], s["address"], s["deploy_dir"])]
     subprocess.call(call_string)
 
 
@@ -34,11 +35,11 @@ def remote():
 
         if len(argv) == 3 :
             remote = conf_json["remote"][argv[2]]
-            rsync(remote, conf_json["project_directory"])
+            rsync(remote, conf_json["project_dir"])
 
         else:
             remote = conf_json["remote"]["standard"]
-            rsync(remote, conf_json["project_directory"])
+            rsync(remote, conf_json["project_dir"])
 
     else:
         print("Cannot find config file. Use: ldeploy init to create it")
@@ -47,7 +48,10 @@ def remote():
 # INIT
 # # # # # # # # # # # #
 def init():
-    print("Initializing")
+    app_dir = os.path.dirname(os.path.realpath(__file__)) + "/ldeploy.source.json"
+    cwd = os.getcwd() + "/ldeploy.json"
+    copyfile(app_dir, cwd)
+    print("LDeploy init complete")
 
 
 # APP STARTER

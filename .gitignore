@@ -2,4 +2,4 @@
 /deploy
 reset.sh
 ldeploy.json
-ldeploy.*
+ldeploy.sh*

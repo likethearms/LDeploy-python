@@ -1,0 +1,17 @@
+{
+    "project_dir": "",
+    "remote": {
+        "standard": {
+            "address": "",
+            "user": "",
+            "deploy_dir": "",
+            "chown": ""
+        },
+        "custom": {
+            "address": "",
+            "user": "",
+            "deploy_dir": "",
+            "chown": ""
+        }
+    }
+}
