@@ -13,7 +13,7 @@ a1 = str(argv[1])
 # RSYNC
 # # # # # # # # # # # #
 def rsync(s, l):
-    call_string = ["rsync", "-aP", "--chown={}".format(s["chown"]), "{}".format(l), "{}@{}:{}".format(s["user"], s["address"], s["deploy_dir"])]
+    call_string = ["rsync", "-aP", "--chown={}".format(s["chown"]), "{}".format(l), "--exclude", ".git/", "{}@{}:{}".format(s["user"], s["address"], s["deploy_dir"])]
     subprocess.call(call_string)
 
 
