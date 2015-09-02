@@ -1,5 +1,6 @@
 {
     "project_dir": "",
+    "ignore": [".git/"],
     "remote": {
         "standard": {
             "address": "",

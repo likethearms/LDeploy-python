@@ -12,15 +12,24 @@ a1 = str(argv[1])
 
 # RSYNC
 # # # # # # # # # # # #
-def rsync(s, l):
-    call_string = ["rsync", "-aP", "--chown={}".format(s["chown"]), "{}".format(l), "--exclude", ".git/", "{}@{}:{}".format(s["user"], s["address"], s["deploy_dir"])]
-    subprocess.call(call_string)
+def rsync(s, l, i):
+
+    call_string = ["rsync", "-aP", "--chown={}".format(s["chown"]), "{}".format(l), "--exclude", ".git/", i, "{}@{}:{}".format(s["user"], s["address"], s["deploy_dir"])]
+    break_string = []
+    break_string = ["rsync", "-aP", "--chown={}".format(s["chown"]), "{}".format(l)] + i + ["{}@{}:{}".format(s["user"], s["address"], s["deploy_dir"])]
+    # subprocess.call(call_string)
+    subprocess.call(break_string)
+    # print(break_string)
 
 
 # HELP
 # # # # # # # # # # # #
 def help_function():
-    print("You get help")
+    help_text = """ LDeploy help
+    remote {arg} - push data to server
+    help - you get help
+    init - create ldeploy json file"""
+    print(help_text)
 
 
 # REMOTE
@@ -33,13 +42,18 @@ def remote():
         with open('ldeploy.json') as ldeploy_file:
             conf_json = json.load(ldeploy_file)
 
+        ignore = [];
+        for item in conf_json["ignore"]:
+            ignore.append("--exclude")
+            ignore.append(item)
+
         if len(argv) == 3 :
             remote = conf_json["remote"][argv[2]]
-            rsync(remote, conf_json["project_dir"])
+            rsync(remote, conf_json["project_dir"], ignore)
 
         else:
             remote = conf_json["remote"]["standard"]
-            rsync(remote, conf_json["project_dir"])
+            rsync(remote, conf_json["project_dir"], ignore)
 
     else:
         print("Cannot find config file. Use: ldeploy init to create it")
