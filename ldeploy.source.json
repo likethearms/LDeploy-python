@@ -1,6 +1,6 @@
 {
     "project_dir": "",
-    "ignore": [".git/"],
+    "ignore": [".git/", "ldeploy.json"],
     "remote": {
         "standard": {
             "address": "",
