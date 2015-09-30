@@ -5,12 +5,14 @@
         "standard": {
             "address": "",
             "user": "",
+            "port": "",
             "deploy_dir": "",
             "chown": ""
         },
         "custom": {
             "address": "",
             "user": "",
+            "port": "port",
             "deploy_dir": "",
             "chown": ""
         }
