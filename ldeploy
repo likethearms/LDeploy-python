@@ -42,8 +42,7 @@ def remote():
 
         ignore = [];
         for item in conf_json["ignore"]:
-            ignore.append("--exclude")
-            ignore.append(item)
+            ignore.append("--exclude={}".format(item))
 
         if len(argv) == 3 :
             remote = conf_json["remote"][argv[2]]
