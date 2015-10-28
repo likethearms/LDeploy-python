@@ -45,8 +45,18 @@ def remote():
             ignore.append("--exclude={}".format(item))
 
         if len(argv) == 3 :
-            remote = conf_json["remote"][argv[2]]
-            rsync(remote, conf_json["project_dir"], ignore)
+
+            if (argv[2] == 'all'):
+                for key in conf_json["remote"].keys():
+                    remote = conf_json["remote"][key]
+                    rsync(remote, conf_json["project_dir"], ignore)
+            else:
+                if argv[2] in conf_json["remote"].keys():
+                    print('on')
+                    remote = conf_json["remote"][argv[2]]
+                    rsync(remote, conf_json["project_dir"], ignore)
+                else:
+                    print('There is no server {}'.format(argv[2]))
 
         else:
             remote = conf_json["remote"]["standard"]
