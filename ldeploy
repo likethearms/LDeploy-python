@@ -26,7 +26,9 @@ def help_function():
     help_text = """ LDeploy help
     remote {arg} - push data to server
     help - you get help
-    init - create ldeploy json file"""
+    init - create ldeploy json file
+
+    ldeploy remote all - upload files to all servers"""
     print(help_text)
 
 
