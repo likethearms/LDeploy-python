@@ -11,8 +11,8 @@
         },
         "custom": {
             "address": "",
-            "user": "22",
-            "port": "",
+            "user": "",
+            "port": "22",
             "deploy_dir": "",
             "chown": ""
         }
