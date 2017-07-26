@@ -3,21 +3,11 @@
 import sys
 import subprocess
 import os.path
-import json
 from shutil import copyfile
+from modules.LdeployParser import LdeployParser
 
 argv = sys.argv
 a1 = str(argv[1])
-
-
-# RSYNC
-# # # # # # # # # # # #
-def rsync(s, l, i):
-
-    break_string = []
-    break_string = ["rsync", "-avz", "--chown={}".format(s["chown"]), '-e "ssh -p {}"'.format(s["port"]), "{}".format(l)] + i + ["{}@{}:{}".format(s["user"], s["address"], s["deploy_dir"])]
-    execute_string = " ".join(break_string)
-    subprocess.call(execute_string, shell=True)
 
 
 # HELP
@@ -37,33 +27,17 @@ def help_function():
 def remote():
     # if conf ex
     if os.path.isfile("ldeploy.json"):
+        ldeployParser = LdeployParser()
 
-        # Open json file
-        with open('ldeploy.json') as ldeploy_file:
-            conf_json = json.load(ldeploy_file)
-
-        ignore = [];
-        for item in conf_json["ignore"]:
-            ignore.append("--exclude={}".format(item))
-
-        if len(argv) == 3 :
-
-            if (argv[2] == 'all'):
-                for key in conf_json["remote"].keys():
-                    remote = conf_json["remote"][key]
-                    rsync(remote, conf_json["project_dir"], ignore)
+        if len(argv) == 3:
+            server_conf = ldeployParser.get_server(argv[2])
+            if a1 == "remote":
+                ldeployParser.rsync(server_conf)
             else:
-                if argv[2] in conf_json["remote"].keys():
-                    print('on')
-                    remote = conf_json["remote"][argv[2]]
-                    rsync(remote, conf_json["project_dir"], ignore)
-                else:
-                    print('There is no server {}'.format(argv[2]))
+                ldeployParser.ssh(server_conf)
 
         else:
-            remote = conf_json["remote"]["standard"]
-            rsync(remote, conf_json["project_dir"], ignore)
-
+            print("Missing remote name")
     else:
         print("Cannot find config file. Use: ldeploy init to create it")
 
@@ -83,5 +57,5 @@ if a1 == "help":
     help_function()
 elif a1 == "init":
     init()
-elif a1 == "remote":
+elif a1 == "remote" or a1 == "ssh":
     remote()
